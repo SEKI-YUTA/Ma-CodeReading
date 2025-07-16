@@ -6,11 +6,21 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.ma_codereading.ui.CounterScreen
+import com.example.ma_codereading.ui.PostsScreen
+import com.example.ma_codereading.ui.TodoScreen
 import com.example.ma_codereading.ui.theme.MaCodeReadingTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +29,64 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MaCodeReadingTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MainApp()
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MaCodeReadingTheme {
-        Greeting("Android")
+fun MainApp() {
+    val navController = rememberNavController()
+    
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = { BottomNavigationBar(navController) }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = "counter",
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable("counter") { CounterScreen() }
+            composable("posts") { PostsScreen() }
+            composable("todos") { TodoScreen() }
+        }
     }
 }
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController) {
+    val items = listOf(
+        BottomNavItem("counter", "Counter", Icons.Default.Add),
+        BottomNavItem("posts", "Posts", Icons.Default.List),
+        BottomNavItem("todos", "Todos", Icons.Default.Home)
+    )
+    
+    NavigationBar {
+        val currentRoute = navController.currentDestination?.route
+        items.forEach { item ->
+            NavigationBarItem(
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                icon = { Icon(item.icon, contentDescription = item.title) },
+                label = { Text(item.title) }
+            )
+        }
+    }
+}
+
+data class BottomNavItem(
+    val route: String,
+    val title: String,
+    val icon: ImageVector
+)
