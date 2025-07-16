@@ -23,7 +23,7 @@ fun TodoScreen(
     viewModel: TodoViewModel = viewModel()
 ) {
     val todos by viewModel.todos.collectAsState()
-    val savedTodos by rememberSaveable { mutableStateOf(todos) }
+    val selectedTodo by rememberSaveable { mutableStateOf(todos.firstOrNull()) }
     
     Column(
         modifier = Modifier

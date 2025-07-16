@@ -50,11 +50,18 @@ fun PostsScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(posts) { post ->
+                val heavyPosts = posts.flatMap { post ->
+                    (1..100).map { index ->
+                        post.copy(id = post.id * 100 + index, title = "${post.title} - Copy $index")
+                    }
+                }
+                items(heavyPosts) { post ->
                     PostItem(
                         post = post,
                         onPostClick = {
-                            Toast.makeText(context, "Clicked: ${post.title}", Toast.LENGTH_SHORT).show()
+                            Thread {
+                                Toast.makeText(context, "Clicked: ${post.title}", Toast.LENGTH_SHORT).show()
+                            }.start()
                         }
                     )
                 }

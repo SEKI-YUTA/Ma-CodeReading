@@ -17,15 +17,13 @@ class CounterViewModel : ViewModel() {
     }
     
     fun decrement() {
-        if (_count.value > 0) {
+        if (_count.value >= 0) {
             _count.value -= 1
         }
     }
     
     fun incrementAfterDelay() {
-        viewModelScope.launch {
-            delay(5000L)
-            _count.value += 1
-        }
+        Thread.sleep(5000L)
+        _count.value += 1
     }
 }
