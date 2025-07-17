@@ -1,7 +1,6 @@
 package com.example.ma_codereading.ui
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,17 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.ma_codereading.R
 import com.example.ma_codereading.data.Post
 import com.example.ma_codereading.viewmodel.PostsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +31,7 @@ fun PostsScreen(
     val posts by viewModel.posts.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     
     Column(
         modifier = Modifier.fillMaxSize()
@@ -59,9 +58,9 @@ fun PostsScreen(
                     PostItem(
                         post = post,
                         onPostClick = {
-                            Thread {
+                            scope.launch(Dispatchers.Default) {
                                 Toast.makeText(context, "Clicked: ${post.title}", Toast.LENGTH_SHORT).show()
-                            }.start()
+                            }
                         }
                     )
                 }
