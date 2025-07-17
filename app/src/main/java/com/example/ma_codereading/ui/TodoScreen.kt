@@ -23,8 +23,7 @@ fun TodoScreen(
     viewModel: TodoViewModel = viewModel()
 ) {
     val todos by viewModel.todos.collectAsState()
-    val selectedTodo by rememberSaveable { mutableStateOf(todos.firstOrNull()) }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
