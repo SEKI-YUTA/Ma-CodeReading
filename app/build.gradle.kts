@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -63,6 +64,9 @@ dependencies {
     
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    
+    // Parcelize
+    implementation("org.jetbrains.kotlin:kotlin-parcelize-runtime:1.9.22")
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

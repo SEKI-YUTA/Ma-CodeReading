@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ma_codereading.ui.CounterScreen
 import com.example.ma_codereading.ui.PostsScreen
+import com.example.ma_codereading.ui.ProfileScreen
 import com.example.ma_codereading.ui.TodoScreen
 import com.example.ma_codereading.ui.theme.MaCodeReadingTheme
 
@@ -52,6 +54,7 @@ fun MainApp() {
             composable("counter") { CounterScreen() }
             composable("posts") { PostsScreen() }
             composable("todos") { TodoScreen() }
+            composable("profile") { ProfileScreen() }
         }
     }
 }
@@ -61,7 +64,8 @@ fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
         BottomNavItem("counter", "Counter", Icons.Default.Add),
         BottomNavItem("posts", "Posts", Icons.Default.List),
-        BottomNavItem("todos", "Todos", Icons.Default.Home)
+        BottomNavItem("todos", "Todos", Icons.Default.Home),
+        BottomNavItem("profile", "Profile", Icons.Default.Person)
     )
     
     NavigationBar {
